@@ -60,7 +60,6 @@ long long part2(std::vector<std::string> input)
 
         int first_index = 0;
 
-
         for(int i = 0; i < str.size(); ++i)
         {
             if(str[i] >= '0' && str[i] <= '9')
@@ -74,7 +73,6 @@ long long part2(std::vector<std::string> input)
 
                 for(int j = first_index; j <= i; ++j)
                 {
-
                     std::string possible_number = str.substr(j, i - j + 1);
                     auto idx = std::find(std::begin(number_as_string), std::end(number_as_string), possible_number);
                     if(idx != std::end(number_as_string))
@@ -87,9 +85,7 @@ long long part2(std::vector<std::string> input)
 
                         break;
                     }
-
                 }
-
             }
             if(is_first_digit && is_real_digit)
             {
@@ -97,9 +93,7 @@ long long part2(std::vector<std::string> input)
                 is_first_digit = false;
                 is_real_digit = false;
             }
-
         }
-
         calibration_value += number_in_string;
         sum += std::stol(calibration_value);
     }
@@ -108,8 +102,9 @@ long long part2(std::vector<std::string> input)
 
 int main()
 {
-    std::freopen("day1inp.txt", "r", stdin);
+    //std::freopen("day1inp.txt", "r", stdin);
     //std::freopen("day1out.txt", "w", stdout);
+
     std::vector<std::string> input = processInput();
 
     std::cout << "The solution for part 1 is: " << part1(input) <<'\n';
