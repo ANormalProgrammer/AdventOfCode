@@ -98,14 +98,14 @@ namespace part_1
         std::string c1_hand = c1.get_hand();
         std::string c2_hand = c2.get_hand();
 
-        if(part_1::get_strength_type(c1_hand) != part_1::get_strength_type(c2_hand))
-            return part_1::get_strength_type(c1_hand) < part_1::get_strength_type(c2_hand);
+        if(get_strength_type(c1_hand) != get_strength_type(c2_hand))
+            return get_strength_type(c1_hand) < get_strength_type(c2_hand);
         else
         {
             for(int i = 0; i < 5; ++i)
             {
                 if(c1_hand[i] != c2_hand[i])
-                    return part_1::convert_to_relative_strength[c1_hand[i]] < part_1::convert_to_relative_strength[c2_hand[i]];
+                    return convert_to_relative_strength[c1_hand[i]] < convert_to_relative_strength[c2_hand[i]];
             }
             return false;
         }
@@ -189,14 +189,14 @@ namespace part_2
         std::string c1_hand = c1.get_hand();
         std::string c2_hand = c2.get_hand();
 
-        if(part_2::get_strength_type(c1_hand) != part_2::get_strength_type(c2_hand))
-            return part_2::get_strength_type(c1_hand) < part_2::get_strength_type(c2_hand);
+        if(get_strength_type(c1_hand) != get_strength_type(c2_hand))
+            return get_strength_type(c1_hand) < get_strength_type(c2_hand);
         else
         {
             for(int i = 0; i < 5; ++i)
             {
                 if(c1_hand[i] != c2_hand[i])
-                    return part_2::convert_to_relative_strength[c1_hand[i]] < part_2::convert_to_relative_strength[c2_hand[i]];
+                    return convert_to_relative_strength[c1_hand[i]] < convert_to_relative_strength[c2_hand[i]];
             }
             return false;
         }
@@ -275,5 +275,4 @@ int main()
 
     std::cout << "The solution for part 1 is: " << part1(input) <<'\n';
     std::cout << "The solution for part 2 is: " << part2(input) <<'\n';
-
 }
