@@ -130,7 +130,7 @@ int main(int argc, char** argv)
         std::freopen(argv[1], "r", stdin);
 
     std::vector<std::string>  input = processInput();
-    std::string word = "XMAS";
+    
     std::cout << "The solution to part 1 is: " << part1(input) << '\n';
     std::cout << "The solution to part 2 is: " << part2(input) << '\n';
 }
