@@ -21,8 +21,6 @@ enum class Directions
     left
 };
 
-
-
 std::vector<std::string> processInput()
 {
     std::vector<std::string> input;
@@ -36,12 +34,15 @@ std::vector<std::string> processInput()
 }
 
 void guard_action(long long &answer, const std::vector<std::string>& input,std::vector<std::vector<bool>>& is_visited,
-                  Position position, Directions direction)
+                  Position position, Directions direction, std::vector<Position>& point_passed)
 {
     if (!is_visited[position.x][position.y])
     {
+        if(input[position.x][position.y] != '^')
+            point_passed.push_back({position.x, position.y});
         ++answer;
         is_visited[position.x][position.y] = true;
+
     }
 
     Position new_position;
@@ -71,25 +72,17 @@ void guard_action(long long &answer, const std::vector<std::string>& input,std::
 
     if(input[new_position.x][new_position.y] == '.' || input[new_position.x][new_position.y] == '^')
     {
-        guard_action(answer, input, is_visited, new_position, direction);
+        guard_action(answer, input, is_visited, new_position, direction, point_passed);
     }
     else if(input[new_position.x][new_position.y] == '#')
     {
-        guard_action(answer, input, is_visited, position, new_direction);
+        guard_action(answer, input, is_visited, position, new_direction, point_passed);
     }
     return;
 }
 bool is_in_loop(const std::vector<std::string>& input, std::map<Position, std::set<Directions>>& all_state,
                   Position position, Directions direction)
 {
-    if(all_state[position].contains(direction))
-    {
-        return true;
-    }
-    else
-    {
-        all_state[position].insert(direction);
-    }
     Position new_position;
     Directions new_direction;
 
@@ -121,6 +114,15 @@ bool is_in_loop(const std::vector<std::string>& input, std::map<Position, std::s
     }
     else if(input[new_position.x][new_position.y] == '#')
     {
+        if(all_state[position].contains(direction))
+        {
+            return true;
+        }
+        else
+        {
+            all_state[position].insert(direction);
+        }
+
         return is_in_loop(input, all_state, position, new_direction);
     }
 }
@@ -140,33 +142,34 @@ long long part1(const std::vector<std::string>& input)
 {
     std::vector<std::vector<bool>> is_visited (input.size(), std::vector<bool>(input[0].size()));
     Position start_pos = search_for_starting_position(input);
+    std::vector<Position> point_passed;
+
     long long answer = 0;
-    guard_action(answer, input, is_visited, start_pos, Directions::up);
+    guard_action(answer, input, is_visited, start_pos, Directions::up, point_passed);
+
     return answer;
 }
 
 long long part2(std::vector<std::string>& input)
 {
-    Position start_pos = search_for_starting_position(input);
-
     long long answer = 0;
+    long long temp = 0;
 
-    for(int x = 0; x < input.size(); ++x)
+    Position start_pos = search_for_starting_position(input);
+    std::vector<std::vector<bool>> is_visited (input.size(), std::vector<bool>(input[0].size()));
+    std::vector<Position> point_passed;
+
+    guard_action(temp, input, is_visited, start_pos, Directions::up, point_passed);
+
+    for(auto position : point_passed)
     {
-        for(int y = 0; y < input[0].size(); ++y)
-        {
-            if(input[x][y] == '.')
-            {
-                //std::cout << x << ' ' << y << '\n';
-                input[x][y] = '#';
+        input[position.x][position.y] = '#';
 
-                std::map<Position, std::set<Directions>> all_state;
-                if(is_in_loop(input, all_state, start_pos, Directions::up))
-                    ++answer;
+        std::map<Position, std::set<Directions>> all_state;
+        if(is_in_loop(input, all_state, start_pos, Directions::up))
+            ++answer;
 
-                input[x][y] = '.';
-            }
-        }
+        input[position.x][position.y] = '.';
     }
     return answer;
 }
